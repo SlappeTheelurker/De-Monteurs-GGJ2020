@@ -5,21 +5,20 @@ using UnityEditor; //temp
 
 public class Claw : MonoBehaviour
 {
-
     public Transform grabPoint;
     public GrabbableObject grabbedObject;
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        GameObject g = collision.gameObject;
+        GameObject g = other.gameObject;
         GrabbableObject obj = g.GetComponent<GrabbableObject>();
         if (obj != null && grabbedObject == null)
         {
-
             Grab(obj);
         }
     }
+
     private void Grab(GrabbableObject obj)
     {
         if (!obj.grabbable)

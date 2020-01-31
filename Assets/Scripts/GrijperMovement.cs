@@ -11,7 +11,6 @@ public class GrijperMovement : MonoBehaviour
     [SerializeField] private float maxUpMoveSpeed = 0.2f;
 
     //calculating variables
-    private bool movementEnabled = true;
     private Vector3 curVelocity = new Vector3();
     private Vector3 newPosition = new Vector3();
     private Vector3 grappleReturnDestination = new Vector3();
