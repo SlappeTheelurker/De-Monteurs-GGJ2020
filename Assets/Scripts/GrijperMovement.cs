@@ -5,6 +5,7 @@ using UnityEngine;
 public class GrijperMovement : MonoBehaviour
 {
     //editor variables
+    [SerializeField] private bool UseTriggerDownMovement = true;
     [SerializeField] private float maxMoveSpeed = 0.2f;
     [SerializeField] private float maxDownMoveSpeed = 0.2f;
     [SerializeField] private float downMoveGrappleLength = 5.0f;
@@ -39,13 +40,24 @@ public class GrijperMovement : MonoBehaviour
         {
             case movementState.FreeMovement:
                 //Do movement
+                if (UseTriggerDownMovement)
+                {
+                    float triggerInput = Input.GetAxisRaw("R2");
+                    float triggerInputConverted = (triggerInput + 1.0f) / 2.0f; //ps4 trigger goes from -1.0 -> 1.0    >.<
+
+                    float verticalPosition = triggerInputConverted * -downMoveGrappleLength;
+                    Debug.Log("R2: " + triggerInput + ", converted: " + triggerInputConverted);
+                    Debug.Log("Vertical pos: " + verticalPosition);
+                    thisRB.MovePosition(new Vector3(thisRB.position.x, verticalPosition, thisRB.position.z));
+                }
+
                 Vector3 movementInput = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
                 movementInput.Normalize();
-                movementInput *= maxMoveSpeed;
+                movementInput *= maxMoveSpeed * Time.deltaTime;
                 thisRB.MovePosition(thisRB.position + movementInput);
 
                 //Check grapple button
-                if (Input.GetButtonDown("X"))
+                if (!UseTriggerDownMovement && Input.GetButtonDown("X"))
                 {
                     thisMovementState = movementState.GrapplingDown;
                     grappleReturnDestination = thisRB.position;
@@ -56,7 +68,7 @@ public class GrijperMovement : MonoBehaviour
             case movementState.GrapplingDown:
                 //Do movement
                 curVelocity = new Vector3(0.0f, -maxDownMoveSpeed);
-                newPosition = thisRB.position + curVelocity;
+                newPosition = thisRB.position + (curVelocity * Time.deltaTime);
                 if (newPosition.y <= grappleTargetDestination.y)
                 {
                     thisRB.MovePosition(grappleTargetDestination);
@@ -71,7 +83,7 @@ public class GrijperMovement : MonoBehaviour
             case movementState.ReturningUp:
                 //Do movement
                 curVelocity = new Vector3(0.0f, maxUpMoveSpeed);
-                newPosition = thisRB.position + curVelocity;
+                newPosition = thisRB.position + (curVelocity * Time.deltaTime);
                 if (newPosition.y >= grappleReturnDestination.y)
                 {
                     thisRB.MovePosition(grappleReturnDestination);
