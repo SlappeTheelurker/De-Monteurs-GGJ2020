@@ -6,16 +6,19 @@ public class GrijperMovement : MonoBehaviour
 {
     //editor variables
     [SerializeField] private bool UseTriggerDownMovement = true;
-    [SerializeField] private float maxMoveSpeed = 0.2f;
-    [SerializeField] private float maxDownMoveSpeed = 0.2f;
-    [SerializeField] private float downMoveGrappleLength = 5.0f;
-    [SerializeField] private float maxUpMoveSpeed = 0.2f;
+    [SerializeField] private float maxMoveSpeed = 1.0f;
+    [SerializeField] private float maxDownMoveSpeed = 1.0f;
+    [SerializeField] private float downMoveGrappleLength = 3.0f;
+    [SerializeField] private float maxUpMoveSpeed = 1.0f;
+    [SerializeField] private float vertMoveEaseLength = 1.0f;
+    [SerializeField] private float vertMoveEaseMultiplier = 0.2f;
 
     //calculating variables
     private Vector3 curVelocity = new Vector3();
     private Vector3 newPosition = new Vector3();
     private Vector3 grappleReturnDestination = new Vector3();
     private Vector3 grappleTargetDestination = new Vector3();
+    private float prevTriggerInput = 0.0f;
 
     //references to other components
     private Rigidbody thisRB;
@@ -44,11 +47,21 @@ public class GrijperMovement : MonoBehaviour
                 {
                     float triggerInput = Input.GetAxisRaw("R2");
                     float triggerInputConverted = (triggerInput + 1.0f) / 2.0f; //ps4 trigger goes from -1.0 -> 1.0    >.<
-
-                    float verticalPosition = triggerInputConverted * -downMoveGrappleLength;
-                    Debug.Log("R2: " + triggerInput + ", converted: " + triggerInputConverted);
-                    Debug.Log("Vertical pos: " + verticalPosition);
-                    thisRB.MovePosition(new Vector3(thisRB.position.x, verticalPosition, thisRB.position.z));
+                    bool goingDown = triggerInput - prevTriggerInput >= 0.0f;
+                    prevTriggerInput = triggerInput;
+                    float verticalTargetPos = triggerInputConverted * -downMoveGrappleLength;
+                    if (goingDown && verticalTargetPos <= -downMoveGrappleLength + vertMoveEaseLength
+                        ||((!goingDown || triggerInputConverted == 0.0f) && verticalTargetPos >= -vertMoveEaseLength))
+                    {
+                        float vertVel = verticalTargetPos - thisRB.position.y;
+                        vertVel *= vertMoveEaseMultiplier;
+                        float newPosY = thisRB.position.y + vertVel;
+                        thisRB.MovePosition(new Vector3(thisRB.position.x, newPosY, thisRB.position.z));
+                    }
+                    else
+                    {
+                        thisRB.MovePosition(new Vector3(thisRB.position.x, verticalTargetPos, thisRB.position.z));
+                    }
                 }
 
                 Vector3 movementInput = new Vector3(Input.GetAxis("Horizontal"), 0.0f, Input.GetAxis("Vertical"));
