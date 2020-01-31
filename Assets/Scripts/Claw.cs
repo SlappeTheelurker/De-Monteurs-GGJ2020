@@ -23,6 +23,14 @@ public class Claw : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if(Input.GetButtonDown("Square"))
+        {
+            Ungrab();
+        }
+    }
+
     private void Grab(GrabbableObject obj)
     {
         if (!obj.grabbable)
@@ -37,6 +45,8 @@ public class Claw : MonoBehaviour
 
     public void Ungrab()
     {
+        if (grabbedObject == null)
+            return;
         grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
         grabbedObject.grabbable = true;
         grabbedObject.transform.SetParent(null);
