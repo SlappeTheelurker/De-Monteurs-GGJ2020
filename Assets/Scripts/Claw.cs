@@ -7,7 +7,7 @@ public class Claw : MonoBehaviour
 {
     public Transform grabPoint;
     public GrabbableObject grabbedObject;
-
+    public RobotManager robotManager;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,6 +16,10 @@ public class Claw : MonoBehaviour
         if (obj != null && grabbedObject == null)
         {
             Grab(obj);
+        }
+        if(g.GetComponent<ReadyButton>() != null)
+        {
+            robotManager.RobotDone();
         }
     }
 

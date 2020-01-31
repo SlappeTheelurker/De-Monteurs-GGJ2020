@@ -23,7 +23,8 @@ public class RobotManager : MonoBehaviour
     {
         futonHinge.useSpring = true;
         currentRobot.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        Debug.Log("Done");
+        currentRobot = null;
+        Invoke("SpawnRobot",1f);
     }
 }
 
