@@ -4,16 +4,11 @@ using UnityEngine;
 
 public class RobotManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public GameObject[] robotPrefabs;
+    public Transform spawnPoint;
+    public void SpawnRobot()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Instantiate(robotPrefabs[Random.Range(0, robotPrefabs.Length)],spawnPoint.position,Quaternion.identity);
     }
 
     public void RobotDone()
