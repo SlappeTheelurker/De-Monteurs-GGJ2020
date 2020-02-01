@@ -18,7 +18,6 @@ public class ChipSocket : MonoBehaviour
         {
             float rot = other.transform.rotation.eulerAngles.y;
             bool snap = false;
-            Debug.Log(Mathf.Abs(-92 % 90));
             if (Mathf.Abs(rot % 90) <= tolerance)
             {
                 rot = Mathf.RoundToInt(rot / 90) * 90;

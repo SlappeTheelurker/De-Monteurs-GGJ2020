@@ -12,5 +12,16 @@ public class Robot : MonoBehaviour
     public void openHatch()
     {
         hinge.useSpring = true;
+
+        Invoke("EnableChipPhysics", 0.5f);
+    }
+
+    public void EnableChipPhysics()
+    {
+        foreach (Chip item in motherboard.chips)
+        {
+            item.rigidbody.isKinematic = false;
+            item.rigidbody.constraints = RigidbodyConstraints.None;
+        }
     }
 }
