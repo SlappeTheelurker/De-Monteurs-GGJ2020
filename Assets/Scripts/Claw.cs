@@ -7,7 +7,7 @@ public class Claw : MonoBehaviour
 {
     public Transform grabPoint;
     public GrabbableObject grabbedObject;
-
+    public RobotManager robotManager;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -16,6 +16,18 @@ public class Claw : MonoBehaviour
         if (obj != null && grabbedObject == null)
         {
             Grab(obj);
+        }
+        if(g.GetComponent<ReadyButton>() != null)
+        {
+            robotManager.RobotDone();
+        }
+    }
+
+    private void Update()
+    {
+        if(Input.GetButtonDown("Square"))
+        {
+            Ungrab();
         }
     }
 
@@ -33,6 +45,8 @@ public class Claw : MonoBehaviour
 
     public void Ungrab()
     {
+        if (grabbedObject == null)
+            return;
         grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
         grabbedObject.grabbable = true;
         grabbedObject.transform.SetParent(null);
