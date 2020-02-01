@@ -20,6 +20,7 @@ public class GrijperMovement : MonoBehaviour
     private Vector3 grappleReturnDestination = new Vector3();
     private Vector3 grappleTargetDestination = new Vector3();
     private float prevTriggerInput = 0.0f;
+    private float startHeight = 0.0f;
 
     //references to other components
     private Rigidbody thisRB;
@@ -36,6 +37,7 @@ public class GrijperMovement : MonoBehaviour
     {
         if (thisRB == null) thisRB = GetComponent<Rigidbody>();
         thisMovementState = movementState.FreeMovement;
+        startHeight = thisRB.position.y;
     }
 
     void Update()
@@ -45,7 +47,6 @@ public class GrijperMovement : MonoBehaviour
             case movementState.FreeMovement:
                 //Do rotation
                 float RSInput = Input.GetAxisRaw("RightStickX");
-                Debug.Log("RS: " + RSInput);
                 if (RSInput != 0.0f)
                 {
                     Vector3 eulerAngleVelocity = new Vector3(0.0f, RSInput * maxRotationSpeed, 0.0f);
@@ -57,12 +58,13 @@ public class GrijperMovement : MonoBehaviour
                 if (UseTriggerDownMovement)
                 {
                     float triggerInput = Input.GetAxisRaw("R2");
+                    Debug.Log("TriggerInput: " + triggerInput);
                     float triggerInputConverted = (triggerInput + 1.0f) / 2.0f; //ps4 trigger goes from -1.0 -> 1.0    >.<
                     bool goingDown = triggerInput - prevTriggerInput >= 0.0f;
                     prevTriggerInput = triggerInput;
-                    float verticalTargetPos = triggerInputConverted * -downMoveGrappleLength;
-                    if (goingDown && verticalTargetPos <= -downMoveGrappleLength + vertMoveEaseLength
-                        ||((!goingDown || triggerInputConverted == 0.0f) && verticalTargetPos >= -vertMoveEaseLength))
+                    float verticalTargetPos = startHeight - triggerInputConverted * downMoveGrappleLength;
+                    if (goingDown && verticalTargetPos <= startHeight - downMoveGrappleLength + vertMoveEaseLength
+                        ||((!goingDown || triggerInputConverted == 0.0f) && verticalTargetPos >= startHeight - vertMoveEaseLength))
                     {
                         float vertVel = verticalTargetPos - thisRB.position.y;
                         vertVel *= vertMoveEaseMultiplier;
