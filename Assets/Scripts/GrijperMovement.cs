@@ -6,6 +6,7 @@ public class GrijperMovement : MonoBehaviour
 {
     //editor variables
     [SerializeField] private bool UseTriggerDownMovement = true;
+    [SerializeField] private bool UseController = true;
     [SerializeField] private float maxMoveSpeed = 1.0f;
     [SerializeField] private float maxDownMoveSpeed = 1.0f;
     [SerializeField] private float downMoveGrappleLength = 3.0f;
@@ -57,12 +58,20 @@ public class GrijperMovement : MonoBehaviour
                 //Do movement
                 if (UseTriggerDownMovement)
                 {
-                    float triggerInput = Input.GetAxisRaw("R2");
-                    Debug.Log("TriggerInput: " + triggerInput);
-                    float triggerInputConverted = (triggerInput + 1.0f) / 2.0f; //ps4 trigger goes from -1.0 -> 1.0    >.<
+                    float triggerInput = 0.0f;
+                    float triggerInputConverted = 0.0f;
+                    if (UseController)
+                    {
+                        triggerInput = Input.GetAxisRaw("R2");
+                        triggerInputConverted = (triggerInput + 1.0f) / 2.0f; //ps4 trigger goes from -1.0 -> 1.0    >.<
+                    }
+                    else
+                    {
+                        triggerInput = triggerInputConverted = Input.GetAxis("Down");
+                    }
                     bool goingDown = triggerInput - prevTriggerInput >= 0.0f;
                     prevTriggerInput = triggerInput;
-                    float verticalTargetPos = startHeight - triggerInputConverted * downMoveGrappleLength;
+                    float verticalTargetPos = startHeight - (triggerInputConverted * downMoveGrappleLength);
                     if (goingDown && verticalTargetPos <= startHeight - downMoveGrappleLength + vertMoveEaseLength
                         ||((!goingDown || triggerInputConverted == 0.0f) && verticalTargetPos >= startHeight - vertMoveEaseLength))
                     {
