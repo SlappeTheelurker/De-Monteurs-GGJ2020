@@ -17,6 +17,9 @@ public class ChipSocket : MonoBehaviour
         Chip chip = other.GetComponent<Chip>();
         if (chip != null && socketedChip == null)
         {
+            
+            chip.claw?.Ungrab();
+
             float rot = other.transform.rotation.eulerAngles.y;
             bool snap = false;
             if (Mathf.Abs(rot % 90) <= tolerance)

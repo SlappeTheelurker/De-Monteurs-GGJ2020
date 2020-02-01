@@ -5,7 +5,8 @@ public class Chip : GrabbableObject
 {
     public Rigidbody rigidbody;
     public ChipFormats fortmatType;
-    public string type = "NONE"; 
+    public string type = "NONE";
+    [HideInInspector] public Claw claw = null;
 
 
     private void Start()

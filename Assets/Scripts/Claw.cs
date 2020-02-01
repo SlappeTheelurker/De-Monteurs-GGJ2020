@@ -36,7 +36,12 @@ public class Claw : MonoBehaviour
         if (!obj.grabbable)
             return;
 
-        
+        Chip chip = obj.GetComponent<Chip>();
+        if (chip)
+        {
+            chip.claw = this;
+        }
+
         grabbedObject = obj;
         grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
         grabbedObject.grabbable = false;
