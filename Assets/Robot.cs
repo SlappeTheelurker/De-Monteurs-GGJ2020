@@ -137,14 +137,7 @@ public class Robot : MonoBehaviour
             //        Error += s.type + "Chip placed where it doesn't belong\n";
             //    }
             //}
-
-
-
-
-
-
         }
-
 
         for (int i = 0; i < stats.Length; i++)
         {
@@ -156,7 +149,6 @@ public class Robot : MonoBehaviour
             if (stats[i] > motherboard.targetStats[i])
                 Error += System.Enum.GetName(typeof(Chip.StatType), i) + " is too high\n";
         }
-
 
         return Error;
     }

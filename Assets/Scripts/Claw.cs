@@ -8,6 +8,7 @@ public class Claw : MonoBehaviour
     public Transform grabPoint;
     public GrabbableObject grabbedObject;
     public RobotManager robotManager;
+    [SerializeField] private Collider PickUpCollider;
 
     public bool UseController = true;
     public float timeTillUngrabAllow = 0.2f;
@@ -117,6 +118,11 @@ public class Claw : MonoBehaviour
         grabbedObject.grabbable = true;
         grabbedObject.transform.SetParent(null);
         grabbedObject = null;
+    }
+
+    public void SetColliderActive(bool active)
+    {
+        PickUpCollider.enabled = active;
     }
 }
 
