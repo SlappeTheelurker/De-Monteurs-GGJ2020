@@ -14,9 +14,14 @@ public class RobotManager : MonoBehaviour
         if (currentRobot != null)
             return;
         futonHinge.useSpring = false;
-        GameObject ob = Instantiate(robotPrefabs[Random.Range(0, robotPrefabs.Length)],spawnPoint.position,Quaternion.identity);
+        GameObject ob = Instantiate(robotPrefabs[Random.Range(0, robotPrefabs.Length)],spawnPoint.position,spawnPoint.rotation);
         currentRobot = ob;
-        currentRobot.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll & ~  RigidbodyConstraints.FreezePositionY;
+
+        Rigidbody r = currentRobot.GetComponent<Rigidbody>();
+        if (r == null)
+            r = currentRobot.AddComponent<Rigidbody>();
+
+        r.constraints = RigidbodyConstraints.FreezeAll & ~  RigidbodyConstraints.FreezePositionY;
     }
 
     public void RobotDone()

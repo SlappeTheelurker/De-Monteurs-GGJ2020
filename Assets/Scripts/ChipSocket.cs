@@ -25,22 +25,31 @@ public class ChipSocket : MonoBehaviour
                 snap = true;
             }
 
-            if (Mathf.Abs(rot % 90)  >= 90 - tolerance)
+            if (Mathf.Abs(rot % 90) >= 90 - tolerance)
             {
                 rot = Mathf.RoundToInt((rot + tolerance) / 90) * 90;
                 snap = true;
             }
-            if(snap)
+            if (snap)
             {
                 chipOrientation = Mathf.FloorToInt(rot % 360 / 90);
 
                 socketedChip = chip;
-                socketedChip.transform.rotation = Quaternion.Euler(new Vector3(0,rot,0));
+                socketedChip.transform.rotation = Quaternion.Euler(new Vector3(0, rot, 0));
                 socketedChip.transform.position = snapPoint.position;
             }
 
 
 
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Chip chip = other.GetComponent<Chip>();
+        if (chip != null && socketedChip != null)
+        {
+            socketedChip = null;
         }
     }
 }
