@@ -4,6 +4,9 @@ using System.Collections;
 public class Chip : GrabbableObject
 {
     public Rigidbody rigidbody;
+    public ChipFormats fortmatType;
+    public string type = "NONE"; 
+
 
     private void Start()
     {
@@ -12,16 +15,11 @@ public class Chip : GrabbableObject
         rigidbody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
-    private void Update()
+    public enum ChipFormats
     {
-            
+        Size1,
+        Size2,
+        Size3
     }
-
-    public enum ChipTypes
-    {
-        Cube,
-        Round
-    }
-    public ChipTypes type;
    
 }
