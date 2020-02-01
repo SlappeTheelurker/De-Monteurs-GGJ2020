@@ -10,6 +10,8 @@ public class RobotManager : MonoBehaviour
     public Transform spawnPoint;
     public HingeJoint futonHinge;
     public GameObject[] motherboardPrefabs;
+    public Animator cameraAnimator;
+
     public void SpawnRobot()
     {
         if (currentRobot != null)
@@ -27,15 +29,32 @@ public class RobotManager : MonoBehaviour
 
         r.constraints = RigidbodyConstraints.FreezeAll & ~  RigidbodyConstraints.FreezePositionY;
 
+        Invoke("CameraIn", 1f);
         currentRobot.Invoke("openHatch",1.5f);
     }
 
     public void RobotDone()
     {
+        CameraOut();
+        Invoke("LaunchRobot",1f);
+        Invoke("SpawnRobot",2f);
+
+    }
+    public void LaunchRobot()
+    {
         futonHinge.useSpring = true;
         currentRobot.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         currentRobot = null;
-        Invoke("SpawnRobot",1f);
+
+    }
+
+    public void CameraIn()
+    {
+        cameraAnimator.SetBool("in", true);
+    }
+    public void CameraOut()
+    {
+        cameraAnimator.SetBool("in", false);
     }
 }
 
