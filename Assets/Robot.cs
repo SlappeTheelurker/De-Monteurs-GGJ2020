@@ -97,4 +97,18 @@ public class Robot : MonoBehaviour
 
         return Error;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Chip>() != null)
+        {
+            if (other.GetComponent<Chip>().claw != null)
+            {
+                other.GetComponent<Chip>().claw.Ungrab();
+            }
+
+            other.transform.position = OutOfBoundsSpawnpoint.position;
+            //other.transform.rotation = OutOfBoundsSpawnpoint.rotation;
+        }
+    }
 }

@@ -111,6 +111,7 @@ public class Claw : MonoBehaviour
 
     public void ForceUngrab()
     {
+        if (grabbedObject == null) { return; }
         grabbedObject.rigidBody.isKinematic = false;
         grabbedObject.grabbable = true;
         grabbedObject.transform.SetParent(null);
