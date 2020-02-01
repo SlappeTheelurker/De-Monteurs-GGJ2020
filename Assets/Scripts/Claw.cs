@@ -58,7 +58,8 @@ public class Claw : MonoBehaviour
                 Invoke("allowUngrab", timeTillUngrabAllow);
             }
         }
-        else if(!grabAllowed)
+        
+        if(!grabAllowed)
         {
             if (!goingDown)
             {
