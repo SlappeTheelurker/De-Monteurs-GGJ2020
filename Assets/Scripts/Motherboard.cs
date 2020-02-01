@@ -7,4 +7,20 @@ public class Motherboard : MonoBehaviour
     public Chip[] chips;
     public int[] targetStats;
     public string text;
+
+    public Robot owner;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponent<Chip>() != null)
+        {
+            if (other.GetComponent<Chip>().claw != null)
+            {
+                other.GetComponent<Chip>().claw.Ungrab();
+            }
+
+            other.transform.position = owner.OutOfBoundsSpawnpoint.position;
+            //other.transform.rotation = owner.OutOfBoundsSpawnpoint.rotation;
+        }
+    }
 }

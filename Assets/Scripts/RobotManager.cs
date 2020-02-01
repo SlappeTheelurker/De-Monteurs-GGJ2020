@@ -66,6 +66,7 @@ public class RobotManager : MonoBehaviour
     {
         GameObject motherboard = Instantiate(motherboardPrefabs[Random.Range(0, motherboardPrefabs.Length)], currentRobot.motherboardPos.position, currentRobot.motherboardPos.rotation, currentRobot.motherboardPos);
         currentRobot.motherboard = motherboard.GetComponent<Motherboard>();
+        currentRobot.motherboard.owner = currentRobot;
         textBubble.DisplayText(currentRobot.motherboard.text);
     }
 
