@@ -16,6 +16,4 @@ public class RobotOutputUIController : MonoBehaviour
         ErrorTextBox.SetText(ErrorMessage);
         thisAnimator.SetTrigger("Print");   
     }
-
-
 }
