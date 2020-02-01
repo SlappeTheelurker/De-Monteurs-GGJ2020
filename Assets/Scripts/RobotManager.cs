@@ -12,7 +12,6 @@ public class RobotManager : MonoBehaviour
     public GameObject[] motherboardPrefabs;
     public Animator cameraAnimator;
 
-
     public delegate void OnRobotFinished();
     public static OnRobotFinished onRobotFinsihed;
 
