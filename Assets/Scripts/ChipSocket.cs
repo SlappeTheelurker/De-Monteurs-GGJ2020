@@ -22,7 +22,11 @@ public class ChipSocket : MonoBehaviour
         Chip chip = other.GetComponent<Chip>();
         if (chip != null && socketedChip == null)
         {
-            
+            if (chip.claw != null)
+            {
+                if (!chip.claw.getUngrabAllowed()) { return; }
+            }
+
             chip.claw?.Ungrab();
 
             float rot = other.transform.rotation.eulerAngles.y;

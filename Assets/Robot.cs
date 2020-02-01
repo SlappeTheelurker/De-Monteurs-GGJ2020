@@ -8,11 +8,21 @@ public class Robot : MonoBehaviour
     public Transform motherboardPos;
     public Animator doorAnimController;
     public RobotManager thisManager;
+    public Transform OutOfBoundsSpawnpoint;
+
+    private void Start()
+    {
+        if (OutOfBoundsSpawnpoint == null)
+        {
+            Debug.LogError("HE PIEMOL, out of bounds niet set");
+        }
+    }
 
     public void openHatch()
     {
         thisManager.spawnMotherBoard();
         doorAnimController.SetTrigger("OpenDoor");
+        GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         GetComponent<Rigidbody>().isKinematic = true;
         Invoke("EnableChipPhysics", 0.5f);
     }
@@ -21,8 +31,8 @@ public class Robot : MonoBehaviour
     {
         foreach (Chip item in motherboard.chips)
         {
-            item.rigidbody.isKinematic = false;
-            item.rigidbody.constraints = RigidbodyConstraints.None;
+            item.rigidBody.isKinematic = false;
+            item.rigidBody.constraints = RigidbodyConstraints.None;
         }
     }
 

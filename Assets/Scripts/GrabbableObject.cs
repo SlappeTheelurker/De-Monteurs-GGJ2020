@@ -4,5 +4,6 @@ using UnityEngine;
 
 public class GrabbableObject : MonoBehaviour
 {
+    public Rigidbody rigidBody;
     public bool grabbable = true;
 }
