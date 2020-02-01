@@ -13,7 +13,6 @@ public class Chip : GrabbableObject
     {
         rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = true;
-        rigidbody.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     public enum ChipFormats

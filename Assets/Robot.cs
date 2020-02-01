@@ -4,16 +4,16 @@ using UnityEngine;
 
 public class Robot : MonoBehaviour
 {
-    public HingeJoint hinge;
     public Motherboard motherboard;
     public Transform motherboardPos;
-
+    public Animator doorAnimController;
+    public RobotManager thisManager;
 
     public void openHatch()
     {
-        hinge.useSpring = true;
+        thisManager.spawnMotherBoard();
+        doorAnimController.SetTrigger("OpenDoor");
         GetComponent<Rigidbody>().isKinematic = true;
-
         Invoke("EnableChipPhysics", 0.5f);
     }
 
