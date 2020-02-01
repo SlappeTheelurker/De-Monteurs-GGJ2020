@@ -12,6 +12,7 @@ public class RobotManager : MonoBehaviour
     public HingeJoint futonHinge;
     public GameObject[] motherboardPrefabs;
     public Animator cameraAnimator;
+    public TextBubble textBubble;
 
     public delegate void OnRobotFinished();
     public static OnRobotFinished onRobotFinsihed;
@@ -41,12 +42,12 @@ public class RobotManager : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
-        public void SpawnRobot()
+    public void SpawnRobot()
     {
         if (currentRobot != null)
             return;
         futonHinge.useSpring = false;
-        GameObject ob = Instantiate(robotPrefabs[Random.Range(0, robotPrefabs.Length)],spawnPoint.position,spawnPoint.rotation);
+        GameObject ob = Instantiate(robotPrefabs[Random.Range(0, robotPrefabs.Length)], spawnPoint.position, spawnPoint.rotation);
         currentRobot = ob.GetComponent<Robot>();
         currentRobot.thisManager = this;
 
@@ -54,23 +55,25 @@ public class RobotManager : MonoBehaviour
         if (r == null)
             r = ob.AddComponent<Rigidbody>();
 
-        r.constraints = RigidbodyConstraints.FreezeAll & ~  RigidbodyConstraints.FreezePositionY;
+        r.constraints = RigidbodyConstraints.FreezeAll & ~RigidbodyConstraints.FreezePositionY;
+
 
         Invoke("CameraIn", 1f);
-        currentRobot.Invoke("openHatch",1.5f);
+        currentRobot.Invoke("openHatch", 1.5f);
     }
 
     public void spawnMotherBoard()
     {
         GameObject motherboard = Instantiate(motherboardPrefabs[Random.Range(0, motherboardPrefabs.Length)], currentRobot.motherboardPos.position, currentRobot.motherboardPos.rotation, currentRobot.motherboardPos);
         currentRobot.motherboard = motherboard.GetComponent<Motherboard>();
+        textBubble.DisplayText(currentRobot.motherboard.text);
     }
 
     public void RobotDone()
     {
         //check robot
         string Error = currentRobot.CheckChips();
-        if ( !string.IsNullOrWhiteSpace(Error))
+        if (!string.IsNullOrWhiteSpace(Error))
         {
             RobotOutputUIController.Trigger(Error);
         }
@@ -78,8 +81,8 @@ public class RobotManager : MonoBehaviour
 
 
         CameraOut();
-        Invoke("LaunchRobot",1f);
-        Invoke("SpawnRobot",2f);
+        Invoke("LaunchRobot", 1f);
+        Invoke("SpawnRobot", 2f);
 
     }
     public void LaunchRobot()
