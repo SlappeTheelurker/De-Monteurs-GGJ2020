@@ -7,7 +7,8 @@ public class ChipSocket : MonoBehaviour
     public Chip socketedChip;
     public Transform snapPoint;
     public int chipOrientation; // -1 = none
-    public float tolerance = 10f;
+    
+    private float tolerance = 30f;
 
     [Header("Correct data")]
     public bool needChip;

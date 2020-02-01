@@ -7,10 +7,12 @@ public class GrijperMovement : MonoBehaviour
     //editor variables
     [SerializeField] private bool UseTriggerDownMovement = true;
     [SerializeField] private bool UseController = true;
-    [SerializeField] private float maxMoveSpeed = 1.0f;
-    [SerializeField] private float maxDownMoveSpeed = 1.0f;
+    [SerializeField] private float maxMoveSpeed = 0.1f;
+    [SerializeField] private float maxDownMoveSpeed = 0.1f;
     [SerializeField] private float downMoveGrappleLength = 3.0f;
-    [SerializeField] private float maxUpMoveSpeed = 1.0f;
+    [SerializeField] private float downMoveMaxLength = 3.0f;
+    [SerializeField] private float downMoveLengthOffset = 0.2f;
+    [SerializeField] private float maxUpMoveSpeed = 0.1f;
     [SerializeField] private float vertMoveEaseLength = 1.0f;
     [SerializeField] private float vertMoveEaseMultiplier = 0.2f;
     [SerializeField] private float maxRotationSpeed = 1.0f;
@@ -71,6 +73,18 @@ public class GrijperMovement : MonoBehaviour
                     }
                     bool goingDown = triggerInput - prevTriggerInput >= 0.0f;
                     prevTriggerInput = triggerInput;
+
+                    RaycastHit hit;
+                    Vector3 rayStartPoint = new Vector3(thisRB.position.x, startHeight, thisRB.position.z);
+                    if (Physics.Raycast(rayStartPoint, -Vector3.up, out hit))
+                    {
+                        downMoveGrappleLength = hit.distance - downMoveLengthOffset;
+                        if (downMoveGrappleLength > downMoveMaxLength)
+                        {
+                            downMoveGrappleLength = downMoveMaxLength;
+                        }
+                    }
+
                     float verticalTargetPos = startHeight - (triggerInputConverted * downMoveGrappleLength);
                     if (goingDown && verticalTargetPos <= startHeight - downMoveGrappleLength + vertMoveEaseLength
                         ||((!goingDown || triggerInputConverted == 0.0f) && verticalTargetPos >= startHeight - vertMoveEaseLength))
