@@ -12,6 +12,7 @@ public class GrijperMovement : MonoBehaviour
     [SerializeField] private float maxUpMoveSpeed = 1.0f;
     [SerializeField] private float vertMoveEaseLength = 1.0f;
     [SerializeField] private float vertMoveEaseMultiplier = 0.2f;
+    [SerializeField] private float maxRotationSpeed = 1.0f;
 
     //calculating variables
     private Vector3 curVelocity = new Vector3();
@@ -42,6 +43,16 @@ public class GrijperMovement : MonoBehaviour
         switch (thisMovementState)
         {
             case movementState.FreeMovement:
+                //Do rotation
+                float RSInput = Input.GetAxisRaw("RightStickX");
+                Debug.Log("RS: " + RSInput);
+                if (RSInput != 0.0f)
+                {
+                    Vector3 eulerAngleVelocity = new Vector3(0.0f, RSInput * maxRotationSpeed, 0.0f);
+                    Quaternion deltaRotation = Quaternion.Euler(eulerAngleVelocity * Time.deltaTime);
+                    thisRB.MoveRotation(thisRB.rotation * deltaRotation);
+                }
+
                 //Do movement
                 if (UseTriggerDownMovement)
                 {
