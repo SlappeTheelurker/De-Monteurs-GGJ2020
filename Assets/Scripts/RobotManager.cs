@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEngine.SceneManagement;
 
 public class RobotManager : MonoBehaviour
 {
@@ -17,29 +16,9 @@ public class RobotManager : MonoBehaviour
     public static OnRobotFinished onRobotFinsihed;
     public RobotOutputUIController RobotOutputUIController;
 
-    public float MaxTime = 300f;
-    public float timer = 300f;
-
-    public int correctRobots =0;
-
-    public void Start()
+    private void Start()
     {
-        correctRobots = 0;
-        timer = MaxTime;
         SpawnRobot();
-
-
-    }
-
-    public void Update()
-    {
-        timer -= Time.deltaTime;
-        if(timer < 0)
-        {
-            //Gameover
-            scoreScreen.lastscore = correctRobots;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        }
     }
 
     public void SpawnRobot()
@@ -48,19 +27,23 @@ public class RobotManager : MonoBehaviour
             return;
         futonHinge.useSpring = false;
         GameObject ob = Instantiate(robotPrefabs[Random.Range(0, robotPrefabs.Length)],spawnPoint.position,spawnPoint.rotation);
-        currentRobot = ob.GetComponent<Robot>() ;
+        currentRobot = ob.GetComponent<Robot>();
+        currentRobot.thisManager = this;
 
         Rigidbody r = ob.GetComponent<Rigidbody>();
         if (r == null)
             r = ob.AddComponent<Rigidbody>();
 
-        GameObject motherboard = Instantiate(motherboardPrefabs[Random.Range(0, motherboardPrefabs.Length)], currentRobot.motherboardPos.position, currentRobot.motherboardPos.rotation, currentRobot.motherboardPos);
-        currentRobot.motherboard = motherboard.GetComponent<Motherboard>();
-
         r.constraints = RigidbodyConstraints.FreezeAll & ~  RigidbodyConstraints.FreezePositionY;
 
         Invoke("CameraIn", 1f);
         currentRobot.Invoke("openHatch",1.5f);
+    }
+
+    public void spawnMotherBoard()
+    {
+        GameObject motherboard = Instantiate(motherboardPrefabs[Random.Range(0, motherboardPrefabs.Length)], currentRobot.motherboardPos.position, currentRobot.motherboardPos.rotation, currentRobot.motherboardPos);
+        currentRobot.motherboard = motherboard.GetComponent<Motherboard>();
     }
 
     public void RobotDone()
@@ -70,7 +53,6 @@ public class RobotManager : MonoBehaviour
         if ( !string.IsNullOrWhiteSpace(Error))
         {
             RobotOutputUIController.Trigger(Error);
-            correctRobots++;
         }
 
 

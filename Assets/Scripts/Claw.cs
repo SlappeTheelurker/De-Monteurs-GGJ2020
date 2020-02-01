@@ -46,6 +46,7 @@ public class Claw : MonoBehaviour
         grabbedObject.GetComponent<Rigidbody>().isKinematic = true;
         grabbedObject.grabbable = false;
         grabbedObject.transform.SetParent(grabPoint);
+        grabbedObject.transform.localPosition = new Vector3(0.0f, 0.0f);
     }
 
     public void Ungrab()
