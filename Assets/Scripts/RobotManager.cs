@@ -10,6 +10,10 @@ public class RobotManager : MonoBehaviour
     public Transform spawnPoint;
     public HingeJoint futonHinge;
     public GameObject[] motherboardPrefabs;
+
+    public delegate void OnRobotFinished();
+    public static OnRobotFinished onRobotFinsihed;
+
     public void SpawnRobot()
     {
         if (currentRobot != null)
@@ -33,6 +37,7 @@ public class RobotManager : MonoBehaviour
     public void RobotDone()
     {
         futonHinge.useSpring = true;
+        currentRobot.GetComponent<Rigidbody>().isKinematic = false;
         currentRobot.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         currentRobot = null;
         Invoke("SpawnRobot",1f);

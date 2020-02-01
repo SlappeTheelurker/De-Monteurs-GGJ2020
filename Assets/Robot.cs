@@ -12,6 +12,7 @@ public class Robot : MonoBehaviour
     public void openHatch()
     {
         hinge.useSpring = true;
+        GetComponent<Rigidbody>().isKinematic = true;
 
         Invoke("EnableChipPhysics", 0.5f);
     }
