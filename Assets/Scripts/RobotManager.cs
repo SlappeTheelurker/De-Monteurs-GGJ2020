@@ -12,6 +12,9 @@ public class RobotManager : MonoBehaviour
     public GameObject[] motherboardPrefabs;
     public Animator cameraAnimator;
 
+    public delegate void OnRobotFinished();
+    public static OnRobotFinished onRobotFinsihed;
+
     public void SpawnRobot()
     {
         if (currentRobot != null)
@@ -43,6 +46,7 @@ public class RobotManager : MonoBehaviour
     public void LaunchRobot()
     {
         futonHinge.useSpring = true;
+        currentRobot.GetComponent<Rigidbody>().isKinematic = false;
         currentRobot.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
         currentRobot = null;
 
