@@ -6,22 +6,28 @@ using UnityEditor;
 public class RobotManager : MonoBehaviour
 {
     public GameObject[] robotPrefabs;
-    public GameObject currentRobot;
+    public Robot currentRobot;
     public Transform spawnPoint;
     public HingeJoint futonHinge;
+    public GameObject[] motherboardPrefabs;
     public void SpawnRobot()
     {
         if (currentRobot != null)
             return;
         futonHinge.useSpring = false;
         GameObject ob = Instantiate(robotPrefabs[Random.Range(0, robotPrefabs.Length)],spawnPoint.position,spawnPoint.rotation);
-        currentRobot = ob;
+        currentRobot = ob.GetComponent<Robot>() ;
 
-        Rigidbody r = currentRobot.GetComponent<Rigidbody>();
+        Rigidbody r = ob.GetComponent<Rigidbody>();
         if (r == null)
-            r = currentRobot.AddComponent<Rigidbody>();
+            r = ob.AddComponent<Rigidbody>();
+
+        GameObject motherboard = Instantiate(motherboardPrefabs[Random.Range(0, motherboardPrefabs.Length)], currentRobot.motherboardPos.position, currentRobot.motherboardPos.rotation, currentRobot.motherboardPos);
+        currentRobot.motherboard = motherboard.GetComponent<Motherboard>();
 
         r.constraints = RigidbodyConstraints.FreezeAll & ~  RigidbodyConstraints.FreezePositionY;
+
+        currentRobot.Invoke("openHatch",1.5f);
     }
 
     public void RobotDone()
