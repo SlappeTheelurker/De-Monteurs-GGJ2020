@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ChipSocket : MonoBehaviour
 {
-    public Chip.ChipTypes type;
+    public Chip.ChipFormats format;
+    public string type;
     public Chip socketedChip;
     public Transform snapPoint;
     public int correctOrientation; // 0-3 = 0=360
