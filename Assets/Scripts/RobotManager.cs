@@ -13,6 +13,7 @@ public class RobotManager : MonoBehaviour
     public GameObject[] motherboardPrefabs;
     public Animator cameraAnimator;
     public TextBubble textBubble;
+    public Claw claw;
 
     public delegate void OnRobotFinished();
     public static OnRobotFinished onRobotFinsihed;
@@ -26,7 +27,6 @@ public class RobotManager : MonoBehaviour
 
     private void Start()
     {
-
         correctRobots = 0;
         timer = MaxTime;
         SpawnRobot();
@@ -60,6 +60,8 @@ public class RobotManager : MonoBehaviour
 
         Invoke("CameraIn", 1f);
         currentRobot.Invoke("openHatch", 1.5f);
+
+        claw.SetColliderActive(false);
     }
 
     public void spawnMotherBoard()
@@ -88,6 +90,7 @@ public class RobotManager : MonoBehaviour
     }
     public void LaunchRobot()
     {
+        claw.SetColliderActive(false);
         futonHinge.useSpring = true;
         currentRobot.GetComponent<Rigidbody>().isKinematic = false;
         currentRobot.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
