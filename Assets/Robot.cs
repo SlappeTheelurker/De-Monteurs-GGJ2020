@@ -39,35 +39,61 @@ public class Robot : MonoBehaviour
     public string CheckChips()
     {
         string Error = "";
+            int[] stats = new int[motherboard.targetStats.Length];
         foreach (ChipSocket s in motherboard.sockets)
         {
-            if (s.needChip)
+
+            if(s.socketedChip != null)
             {
-                if (s.socketedChip == null)
-                {
-                    Error += "Missing " + s.type + " Chip\n";
-                }
-                else
-                {
-                    if(s.type != s.socketedChip.type)
-                    {
-                        Error += s.socketedChip.type + "in Incorrect location\n";
-                    }
-                    if(s.format != s.socketedChip.fortmatType)
-                    {
-                        Error += s.socketedChip.type + "does not fit\n";
-                    }
-                }
-            }
-            else
-            {
-                if(s.socketedChip != null)
-                {
-                    Error += s.type + "Chip placed where it doesn't belong\n";
-                }
+                stats[(int)s.socketedChip.statType] += (int) s.socketedChip.fortmatType;
             }
 
+
+            //if (s.needChip)
+            //{
+            //    if (s.socketedChip == null)
+            //    {
+            //        Error += "Missing " + s.type + " Chip\n";
+            //    }
+            //    else
+            //    {
+            //        if(s.type != s.socketedChip.type)
+            //        {
+            //            Error += s.socketedChip.type + "in Incorrect location\n";
+            //        }
+            //        if(s.format != s.socketedChip.fortmatType)
+            //        {
+            //            Error += s.socketedChip.type + "does not fit\n";
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    if(s.socketedChip != null)
+            //    {
+            //        Error += s.type + "Chip placed where it doesn't belong\n";
+            //    }
+            //}
+
+
+        
+        
+        
+        
         }
+
+
+        for (int i = 0; i < stats.Length; i++)
+        {
+        Debug.Log("Chip stat: " + stats[i]);
+        Debug.Log("Target stat: " + motherboard.targetStats[i]);
+            if (stats[i] < motherboard.targetStats[i])
+                Error += System.Enum.GetName(typeof(Chip.StatType),i) + " is too low\n";
+
+            if (stats[i] > motherboard.targetStats[i])
+                Error += System.Enum.GetName(typeof(Chip.StatType), i) + " is too high\n";
+        }
+
 
         return Error;
     }
