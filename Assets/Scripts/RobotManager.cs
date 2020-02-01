@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 
 public class RobotManager : MonoBehaviour
@@ -16,12 +17,31 @@ public class RobotManager : MonoBehaviour
     public static OnRobotFinished onRobotFinsihed;
     public RobotOutputUIController RobotOutputUIController;
 
+    public float MaxTime = 300f;
+    public float timer = 300f;
+
+    public int correctRobots = 0;
+
+
     private void Start()
     {
+
+        correctRobots = 0;
+        timer = MaxTime;
         SpawnRobot();
     }
 
-    public void SpawnRobot()
+    public void Update()
+    {
+        timer -= Time.deltaTime;
+        if (timer < 0)
+        {
+            //Gameover
+            scoreScreen.lastscore = correctRobots;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+    }
+        public void SpawnRobot()
     {
         if (currentRobot != null)
             return;
