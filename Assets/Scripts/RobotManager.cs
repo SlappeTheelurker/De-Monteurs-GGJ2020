@@ -14,6 +14,7 @@ public class RobotManager : MonoBehaviour
 
     public delegate void OnRobotFinished();
     public static OnRobotFinished onRobotFinsihed;
+    public RobotOutputUIController RobotOutputUIController;
 
     public void SpawnRobot()
     {
@@ -38,6 +39,15 @@ public class RobotManager : MonoBehaviour
 
     public void RobotDone()
     {
+        //check robot
+        string Error = currentRobot.CheckChips();
+        if ( !string.IsNullOrWhiteSpace(Error))
+        {
+            RobotOutputUIController.Trigger(Error);
+        }
+
+
+
         CameraOut();
         Invoke("LaunchRobot",1f);
         Invoke("SpawnRobot",2f);

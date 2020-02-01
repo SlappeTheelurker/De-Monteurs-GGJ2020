@@ -4,19 +4,26 @@ using UnityEngine;
 
 public class ChipSocket : MonoBehaviour
 {
-    public Chip.ChipFormats format;
-    public string type;
     public Chip socketedChip;
     public Transform snapPoint;
-    public int correctOrientation; // 0-3 = 0=360
     public int chipOrientation; // -1 = none
     public float tolerance = 10f;
 
+    [Header("Correct data")]
+    public bool needChip;
+    public Chip.ChipFormats format;
+    public string type;
+    public int correctOrientation; // 0-3 w/ 0=360
+    
+    
     private void OnTriggerEnter(Collider other)
     {
         Chip chip = other.GetComponent<Chip>();
         if (chip != null && socketedChip == null)
         {
+            
+            chip.claw?.Ungrab();
+
             float rot = other.transform.rotation.eulerAngles.y;
             bool snap = false;
             if (Mathf.Abs(rot % 90) <= tolerance)

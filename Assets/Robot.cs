@@ -25,4 +25,40 @@ public class Robot : MonoBehaviour
             item.rigidbody.constraints = RigidbodyConstraints.None;
         }
     }
+
+    public string CheckChips()
+    {
+        string Error = "";
+        foreach (ChipSocket s in motherboard.sockets)
+        {
+            if (s.needChip)
+            {
+                if (s.socketedChip == null)
+                {
+                    Error += "Missing " + s.type + " Chip\n";
+                }
+                else
+                {
+                    if(s.type != s.socketedChip.type)
+                    {
+                        Error += s.socketedChip.type + "in Incorrect location\n";
+                    }
+                    if(s.format != s.socketedChip.fortmatType)
+                    {
+                        Error += s.socketedChip.type + "does not fit\n";
+                    }
+                }
+            }
+            else
+            {
+                if(s.socketedChip != null)
+                {
+                    Error += s.type + "Chip placed where it doesn't belong\n";
+                }
+            }
+
+        }
+
+        return Error;
+    }
 }
