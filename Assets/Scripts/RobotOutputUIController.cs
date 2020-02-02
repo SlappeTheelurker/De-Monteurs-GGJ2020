@@ -14,6 +14,15 @@ public class RobotOutputUIController : MonoBehaviour
     public void Trigger(string ErrorMessage)
     {
         ErrorTextBox.SetText(ErrorMessage);
-        thisAnimator.SetTrigger("Print");   
+        thisAnimator.SetTrigger("Print");
+        printerSFX();
+        
+    }
+
+    public void printerSFX(){
+        AudioSource audio;
+        audio = GetComponent<AudioSource>();
+        audio.clip = Resources.Load("print2") as AudioClip;
+        audio.Play();
     }
 }
