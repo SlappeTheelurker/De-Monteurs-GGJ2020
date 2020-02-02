@@ -25,6 +25,14 @@ public class Robot : MonoBehaviour
         GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         GetComponent<Rigidbody>().isKinematic = true;
         Invoke("EnableChipPhysics", 0.5f);
+        playSFX();
+    }
+
+    public void playSFX(){
+        AudioSource audio;
+        audio = GetComponent<AudioSource>();
+        audio.clip = Resources.Load("plof") as AudioClip;
+        audio.Play();
     }
 
     public void EnableChipPhysics()
