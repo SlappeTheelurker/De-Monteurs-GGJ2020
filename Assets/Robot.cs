@@ -56,7 +56,7 @@ public class Robot : MonoBehaviour
 
             if(s.chipOrientation != s.correctOrientation)
             {
-                Error += s.socketedChip.type + " chip is placed wrong";
+                Error += s.socketedChip.type + " chip is placed wrong\n";
                 continue;
             }
 
@@ -157,6 +157,9 @@ public class Robot : MonoBehaviour
         {
             Debug.Log("Chip stat: " + stats[i]);
             Debug.Log("Target stat: " + motherboard.targetStats[i]);
+            if (motherboard.targetStats[i] == 99){
+                continue;
+            }
             if (stats[i] < motherboard.targetStats[i])
                 Error += System.Enum.GetName(typeof(Chip.StatType), i) + " is too low\n";
 
