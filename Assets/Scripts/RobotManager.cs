@@ -59,6 +59,7 @@ public class RobotManager : MonoBehaviour
 
 
         Invoke("CameraIn", 1f);
+        Invoke("playSFX", 0.85f);
         currentRobot.Invoke("openHatch", 1.5f);
 
         claw.SetColliderActive(true);
@@ -70,6 +71,13 @@ public class RobotManager : MonoBehaviour
         currentRobot.motherboard = motherboard.GetComponent<Motherboard>();
         currentRobot.motherboard.owner = currentRobot;
         textBubble.DisplayText(currentRobot.motherboard.text);
+    }
+
+    public void playSFX(){
+        AudioSource audio;
+        audio = GetComponent<AudioSource>();
+        audio.clip = Resources.Load("plof") as AudioClip;
+        audio.Play();
     }
 
     public void RobotDone()
