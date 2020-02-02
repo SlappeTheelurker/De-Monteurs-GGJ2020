@@ -99,6 +99,7 @@ public class RobotManager : MonoBehaviour
     public void LaunchRobot()
     {
         claw.SetColliderActive(false);
+        futonHinge.gameObject.GetComponent<Rigidbody>().centerOfMass = new Vector3(0.0f, -2.0f, 0.0f);
         futonHinge.useSpring = true;
         currentRobot.GetComponent<Rigidbody>().isKinematic = false;
         currentRobot.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
