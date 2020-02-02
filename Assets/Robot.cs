@@ -12,6 +12,8 @@ public class Robot : MonoBehaviour
 
     private void Start()
     {
+        gameObject.AddComponent<AudioSource>();
+
         if (OutOfBoundsSpawnpoint == null)
         {
             Debug.LogError("HE PIEMOL, out of bounds niet set");
