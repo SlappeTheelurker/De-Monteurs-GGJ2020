@@ -25,6 +25,14 @@ public class Robot : MonoBehaviour
         GetComponent<Rigidbody>().collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
         GetComponent<Rigidbody>().isKinematic = true;
         Invoke("EnableChipPhysics", 0.5f);
+        playSFX();
+    }
+
+    public void playSFX(){
+        AudioSource audio;
+        audio = GetComponent<AudioSource>();
+        audio.clip = Resources.Load("plof") as AudioClip;
+        audio.Play();
     }
 
     public void EnableChipPhysics()
@@ -45,6 +53,12 @@ public class Robot : MonoBehaviour
 
             if (s.socketedChip == null)
                 continue;
+
+            if(s.chipOrientation != s.correctOrientation)
+            {
+                Error += s.socketedChip.type + " chip is placed wrong\n";
+                continue;
+            }
 
             //Empathy
             if (s.socketedChip.statType == Chip.StatType.Empathy && s.socketedChip.fortmatType == Chip.ChipFormats.Size1)
@@ -143,6 +157,9 @@ public class Robot : MonoBehaviour
         {
             Debug.Log("Chip stat: " + stats[i]);
             Debug.Log("Target stat: " + motherboard.targetStats[i]);
+            if (motherboard.targetStats[i] == 99){
+                continue;
+            }
             if (stats[i] < motherboard.targetStats[i])
                 Error += System.Enum.GetName(typeof(Chip.StatType), i) + " is too low\n";
 
