@@ -46,6 +46,12 @@ public class Robot : MonoBehaviour
             if (s.socketedChip == null)
                 continue;
 
+            if(s.chipOrientation != s.correctOrientation)
+            {
+                Error += s.socketedChip.type + " chip is placed wrong";
+                continue;
+            }
+
             //Empathy
             if (s.socketedChip.statType == Chip.StatType.Empathy && s.socketedChip.fortmatType == Chip.ChipFormats.Size1)
             {

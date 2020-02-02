@@ -50,6 +50,10 @@ public class ChipSocket : MonoBehaviour
                 socketedChip.transform.rotation = Quaternion.Euler(new Vector3(0, rot, 0));
                 socketedChip.transform.position = snapPoint.position;
             }
+            if (chipOrientation != correctOrientation)
+            {
+                //particles
+            }
         }
     }
 
