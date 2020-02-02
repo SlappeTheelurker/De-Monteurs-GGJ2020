@@ -61,7 +61,7 @@ public class RobotManager : MonoBehaviour
         Invoke("CameraIn", 1f);
         currentRobot.Invoke("openHatch", 1.5f);
 
-        claw.SetColliderActive(false);
+        claw.SetColliderActive(true);
     }
 
     public void spawnMotherBoard()
